@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+
+    <!-- ============================ COMPONENT REGISTER   ================================= -->
+    <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+
+        <span class="alert alert-danger d-none" id="lname"></span>
+        <span class="alert alert-danger d-none" id="fname"></span>
+        <article class="card-body">
+            {% include 'includes/alerts.html' %}
+            <header class="mb-4">
+                <h4 class="card-title">Login </h4>
+            </header>
+            <form action="{% url 'register' %}" method="POST">
+                {% csrf_token %}
+
+
+
+                <div class="form-row">
+                    <div class="col form-group">
+                        <label>First name</label>
+                        {{ form.first_name }}
+                    </div> <!-- form-group end.// -->
+                    <div class="col form-group">
+                        <label>Last name</label>
+                        {{ form.last_name }}
+
+                    </div> <!-- form-group end.// -->
+                </div> <!-- form-row end.// -->
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Email</label>
+                        {{ form.email }}
+                    </div> <!-- form-group end.// -->
+                    <div class="form-group col-md-6">
+                        <label>Phone Number</label>
+                        {{ form.phone_number }}
+                    </div> <!-- form-group end.// -->
+                </div> <!-- form-row.// -->
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Create password</label>
+                        {{ form.password }}
+                    </div> <!-- form-group end.// -->
+                    <div class="form-group col-md-6">
+                        <label>Repeat password</label>
+                        {{ form.confirm_password }}
+                    </div> <!-- form-group end.// -->
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Register </button>
+                </div> <!-- form-group// -->
+                {{ form.first_name.errors }}
+
+
+                {{ form.email.errors }}
+                {{ form.non_field_errors }}
+
+            </form>
+        </article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <p class="text-center mt-4">Have an account? <a href="{% url 'login' %}">Log In</a></p>
+    <br><br>
+    <!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+
+
+</section>
+<!-- Front end validation -->
+<script>
+    let lname = document.getElementById("id_last_name");
+    let lnameSpan = document.getElementById("lname");
+    lname.addEventListener("input", () => {
+        let lnameValue = lname.value;
+        if (lnameValue.includes("@") || lnameValue.includes("#") || lnameValue.includes("$") || lnameValue.includes("!") || lnameValue.includes("%")) {
+            lnameValue = '';
+            lnameSpan.innerText = 'Last name should not conatin special character'
+            lnameSpan.classList.toggle("d-block")
+        } else {
+            lnameSpan.classList.remove("d-block")
+
+        }
+    })
+
+
+
+    let fname = document.getElementById("id_first_name");
+    let fnameSpan = document.getElementById("fname");
+    fname.addEventListener("input", () => {
+        let fnameValue = fname.value;
+        if (fnameValue.includes("@") || fnameValue.includes("#") || fnameValue.includes("$") || fnameValue.includes("!") || fnameValue.includes("%")) {
+            fnameValue = '';
+            fnameSpan.innerText = 'First name should not conatin special character'
+            fnameSpan.classList.toggle("d-block")
+        } else {
+            fnameSpan.classList.remove("d-block")
+
+        }
+    })
+
+
+
+
+</script>
+
+
+
+
+{% endblock %}
