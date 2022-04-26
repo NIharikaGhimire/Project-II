@@ -1,4 +1,5 @@
 from itertools import product
+from traceback import print_tb
 from django.shortcuts import redirect, render
 
 from carts.views import _cart_id
@@ -10,6 +11,7 @@ from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 # from carts.views import _cart_id
 from carts.models import Cart, CartItem
+# import requests
 
 
 
@@ -47,15 +49,21 @@ def login(request):
         user = auth.authenticate(email=email,password=password)
         
     
+        print("Authenticated user", user)
         
         if user is not None:
+            print(user is not None)
             try:
-                cart = Cart.objects.filter(cart_id = _cart_id(request))
+                # filter 
+                cart = CartItem.objects.get(cart_id = _cart_id(request))
+                print("Getting cart ",cart)
+
                 print(cart)
 
                 is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
-                print(is_cart_item_exists,"K sachikai aako x ta")
-                print('entering in is_cart_item_exists ')    
+                print(is_cart_item_exists,"IS cart existe")
+                
+                
                 if is_cart_item_exists:
                     cart_item = CartItem.objects.filter(cart=cart)
                    
@@ -63,14 +71,16 @@ def login(request):
                         item.user = user
                         item.save()
             except:
-                print('enterning inside except ')
+              
                 pass
             auth.login(request, user)
-            # messages.success(request, 'You are now logged in')
+            messages.success(request, 'You are now logged in')
             return redirect('dashboard')
         else:
             messages.error(request, 'Invalid login credentials')
             return redirect('login')
+
+          
 
     return render(request, 'accounts/login.html')
 
