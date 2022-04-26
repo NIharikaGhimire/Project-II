@@ -37,6 +37,7 @@ def add_cart(request, product_id):
     cart.save()
     # we have prodcut and cart(we want to put product inside a cart)
     #    combine product and cart
+    # after order update
     try:
         if request.user.is_authenticated:
             user = request.user
