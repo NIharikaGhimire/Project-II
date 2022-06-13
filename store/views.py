@@ -1,6 +1,6 @@
 import imp
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Product
 from category.models import Category
 from carts.views import _cart_id
@@ -8,6 +8,7 @@ from carts.models import CartItem
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
 
+from django.contrib import messages
 
 # Create your views here.
 def store(request, category_slug=None):
@@ -66,3 +67,6 @@ def search(request):
         'product_count': product_count,
     }
     return render(request, 'store/store.html',context)
+
+
+            

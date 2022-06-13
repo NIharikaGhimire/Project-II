@@ -3,6 +3,7 @@ from traceback import print_tb
 from django.shortcuts import redirect, render
 
 from carts.views import _cart_id
+from orders.models import Order
 
 
 from .forms import RegistrationForm
@@ -92,4 +93,10 @@ def logout(request):
 
 @login_required(login_url = 'login')
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html')
+    orders = Order.objects.order_by('created_at').filter(user_id=request.user.id, is_ordered=True)
+    orders_count = orders.count()
+    context ={
+        'orders_count': orders_count,
+        }
+
+    return render(request, 'accounts/dashboard.html', context)
